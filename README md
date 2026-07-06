@@ -1,0 +1,22 @@
+# Ashirwad Sanitary & Tiles - Operating System Terminal Hub
+
+Production full-stack ERP framework constructed natively inside an optimized decoupled Node.js/Express architecture, featuring client token authentication handling, analytical dashboard vectors tracking, and live point-of-sale invoice printing capabilities.
+
+## Production Initialization Sequence Playbook
+
+### 1. Prerequisites Setup
+Verify that your operating server node has the latest LTS version of **Node.js (v18+)** along with a live **PostgreSQL (14+)** enterprise instance running safely.
+
+### 2. Local File Cloning
+Drop the compiled system blueprint files down structurally into a single project directory mapping folder module context:
+```bash
+ashirwad-erp/
+├── package.json
+├── .env.example
+├── database.sql
+├── server.js
+├── index.html
+├── style.css
+├── script.js
+├── manifest.json
+└── service-worker.js
