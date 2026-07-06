@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Enterprise ERP & Showroom Operating System for Ashirwad Sanitary & Tiles">
+    <meta name="theme-color" content="#0a0d16">
+    <title>Ashirwad Operating System — Core Terminal</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0d16'/><text y='65' x='15' fill='%23d4af37' font-size='55' font-weight='bold'>AS</text></svg>">
+</head>
+<body class="dark-mode">
+
+    <section id="lock-screen" aria-label="System Authentication Portal">
+        <div class="lock-container glass-card">
+            <header class="lock-header">
+                <h1>ASHIRWAD SANITARY & TILES</h1>
+                <p class="subtitle">AUTHORIZED CORE OPERATING TERMINAL</p>
+            </header>
+            
+            <div class="clock-display" aria-live="polite">
+                <div id="lock-time">00:00:00</div>
+                <div id="lock-date">INITIALIZING LOGIC DATE MATRIX...</div>
+            </div>
+
+            <div class="pin-display-wrapper" role="presentation">
+                <div class="pin-dot" id="dot-0"></div>
+                <div class="pin-dot" id="dot-1"></div>
+                <div class="pin-dot" id="dot-2"></div>
+                <div class="pin-dot" id="dot-3"></div>
+                <div class="pin-dot" id="dot-4"></div>
+                <div class="pin-dot" id="dot-5"></div>
+                <div class="pin-dot" id="dot-6"></div>
+                <div class="pin-dot" id="dot-7"></div>
+                <div class="pin-dot" id="dot-8"></div>
+                <div class="pin-dot" id="dot-9"></div>
+            </div>
+
+            <div id="lockout-timer-panel" class="lockout-alert" role="alert" style="display: none;">
+                <strong>SECURITY ANOMALY DETECTED</strong><br>
+                <span id="lockout-countdown">Terminal hardware interface frozen for 04:00</span>
+            </div>
+
+            <div class="keypad-matrix" id="hardware-keypad">
+                <button type="button" class="key-btn" onclick="SecurityCore.input(1)">1</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(2)">2</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(3)">3</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(4)">4</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(5)">5</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(6)">6</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(7)">7</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(8)">8</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(9)">9</button>
+                <button type="button" class="key-btn danger-text" onclick="SecurityCore.clear()">CLR</button>
+                <button type="button" class="key-btn" onclick="SecurityCore.input(0)">0</button>
+                <button type="button" class="key-btn success-text" onclick="SecurityCore.verify()">ENT</button>
+            </div>
+        </div>
+    </section>
+
+    <main id="app-viewport" style="display: none;">
+        
+        <aside class="sidebar-navigation">
+            <div class="brand-header">
+                <h2>ASHIRWAD</h2>
+                <p>SANITARY & TILES</p>
+            </div>
+            
+            <nav class="nav-menu" aria-label="Main ERP Navigation Menu">
+                <button type="button" class="nav-item active" data-target="panel-dash" onclick="UiEngine.navigate(this)">📊 Dashboard Room</button>
+                <button type="button" class="nav-item" data-target="panel-inv" onclick="UiEngine.navigate(this)">📦 Inventory Master</button>
+                <button type="button" class="nav-item" data-target="panel-billing" onclick="UiEngine.navigate(this)">🧾 POS Invoicing</button>
+                <button type="button" class="nav-item" data-target="panel-purchases" onclick="UiEngine.navigate(this)">📥 Inward Vouchers</button>
+                <button type="button" class="nav-item" data-target="panel-ledgers" onclick="UiEngine.navigate(this)">👥 Relation Ledgers</button>
+                <button type="button" class="nav-item" data-target="panel-calcs" onclick="UiEngine.navigate(this)">🧮 Material Calculators</button>
+                <button type="button" class="nav-item" data-target="panel-ai" onclick="UiEngine.navigate(this)">🤖 Rule Engine Assistant</button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button type="button" class="btn-danger-action" onclick="SecurityCore.lockTerminal()">🔒 Lock Terminal Node</button>
+            </div>
+        </aside>
+
+        <section class="workspace-viewport">
+            <header class="workspace-header">
+                <div class="header-breadcrumbs">
+                    <span id="active-panel-title">DASHBOARD ROOM CONTROL</span>
+                </div>
+                <div class="header-actions">
+                    <button type="button" class="btn-secondary" onclick="UiEngine.switchTheme()">🌓 Toggle Aesthetics Mode</button>
+                    <span class="operator-badge" id="user-display-badge">🟢 Node Administrator Access</span>
+                </div>
+            </header>
+
+            <div class="workspace-content-scroller">
+                
+                <div id="panel-dash" class="content-panel active-panel">
+                    <div class="metrics-grid">
+                        <div class="glass-card balance-card">
+                            <span class="card-label">TODAY'S TURNOVER GROSS VALUE</span>
+                            <h2 id="metric-sales">₹0.00</h2>
+                        </div>
+                        <div class="glass-card balance-card success-border">
+                            <span class="card-label">ESTIMATED COMBINED NET PROVISION MARGIN</span>
+                            <h2 id="metric-profit">₹0.00</h2>
+                        </div>
+                        <div class="glass-card balance-card info-border">
+                            <span class="card-label">INVENTORY VALUATION (AT INWARD COST BASE)</span>
+                            <h2 id="metric-stockval">₹0.00</h2>
+                        </div>
+                        <div class="glass-card balance-card danger-border">
+                            <span class="card-label">OUTSTANDING CREDIT ACCOUNT ACCRUALS</span>
+                            <h2 id="metric-outstanding">₹0.00</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-split-layout">
+                        <div class="glass-card graph-box">
+                            <h3>Real-Time Dynamic Revenue Vector Graph Tracking</h3>
+                            <div id="svg-chart-host"></div>
+                        </div>
+                        <div class="glass-card system-alerts-box">
+                            <h3>Critical Safety Stock Threshold Violations</h3>
+                            <div id="dash-exceptions-list" class="alert-scroller"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-inv" class="content-panel">
+                    <div class="action-bar">
+                        <div class="search-input-wrapper">
+                            <input type="text" id="inv-search" class="input-premium" placeholder="🔍 Query inventory records directly by structural name, custom grouping categorization, code references..." oninput="InventoryController.render()">
+                        </div>
+                        <button type="button" class="btn-premium" onclick="InventoryController.openFormModal()">➕ Register Novel Stock Product Profile</button>
+                    </div>
+                    
+                    <div class="glass-card data-table-wrapper">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>Code Key Identity</th>
+                                    <th>Product Identity Description</th>
+                                    <th>Brand Matrix</th>
+                                    <th>Main Categorization</th>
+                                    <th>Current Stock Level</th>
+                                    <th>Base Inward Landing Price</th>
+                                    <th>Outward MRP Price Target</th>
+                                    <th>Administrative Controls</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="panel-billing" class="content-panel">
+                    <div class="billing-split-layout">
+                        <div class="glass-card bill-entries-form">
+                            <h3>Outward Transactional Invoice Configuration</h3>
+                            <form id="pos-billing-form" autocomplete="off" onsubmit="event.preventDefault();">
+                                <div class="form-row-grid">
+                                    <div class="field-box">
+                                        <label for="pos-cust-name">Acquiring Client Entity Name</label>
+                                        <input type="text" id="pos-cust-name" class="input-premium" value="Counter Cash Client">
+                                    </div>
+                                    <div class="field-box">
+                                        <label for="pos-cust-phone">Client Contact Index Number Mobile Reference</label>
+                                        <input type="text" id="pos-cust-phone" class="input-premium" placeholder="e.g., +91 94558 55203">
+                                    </div>
+                                    <div class="field-box">
+                                        <label for="pos-cust-gst">Client Statutory Tax Registry ID Number (GSTIN)</label>
+                                        <input type="text" id="pos-cust-gst" class="input-premium" placeholder="Optional 15-Digit Identifier String">
+                                    </div>
+                                    <div class="field-box">
+                                        <label for="pos-bill-type">Fiscal Bill Structure Form Profile</label>
+                                        <select id="pos-bill-type" class="input-premium">
+                                            <option value="Retail Estimate">Retail Estimate Memo Form</option>
+                                            <option value="GST Tax Invoice">Formal GST Tax Invoice Frame</option>
+                                            <option value="Wholesale Trade">Wholesale B2B Trade Framework</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <hr class="form-divider">
+                            
+                            <div class="cart-injection-selection">
+                                <label for="pos-product-injector">Query & Select Active Inventory Matrix Line to Cart Array</label>
+                                <select id="pos-product-injector" class="input-premium" onchange="BillingController.injectItem()"></select>
+                            </div>
+                            
+                            <div class="cart-scroller-table">
+                                <table class="enterprise-table mini-text">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Configuration Identity</th>
+                                            <th>Target Volume Quantity</th>
+                                            <th>MRP Base Price Rate</th>
+                                            <th>Line Item Net Value Asset Amount</th>
+                                            <th>Action Command</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pos-cart-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-card bill-financial-settlement">
+                            <h3>Financial Allocation Reconciliation System</h3>
+                            <div class="summary-line-item">
+                                <span>Gross Aggregated Subtotal Balance Value Matrix:</span>
+                                <strong id="pos-summary-sub">₹0.00</strong>
+                            </div>
+                            <div class="summary-line-item">
+                                <span>Discretionary Trade Discount Deduction Amount Asset (₹):</span>
+                                <input type="number" id="pos-discount" class="input-premium narrow" value="0" min="0" step="0.01" oninput="BillingController.math()">
+                            </div>
+                            <div class="summary-line-item">
+                                <span>Assessed Corporate Central CGST Pool Portion Weighted:</span>
+                                <span id="pos-summary-cgst">₹0.00</span>
+                            </div>
+                            <div class="summary-line-item">
+                                <span>Assessed Corporate State SGST Pool Portion Weighted:</span>
+                                <span id="pos-summary-sgst">₹0.00</span>
+                            </div>
+                            
+                            <hr class="form-divider">
+                            
+                            <div class="summary-line-item total-row">
+                                <span>Total Final Settled Financial Payable Balance Target:</span>
+                                <h2 id="pos-summary-net">₹0.00</h2>
+                            </div>
+                            
+                            <div class="payment-selection-row">
+                                <label for="pos-pay-mode">Payment Processing Allocation Target Target Core Channel</label>
+                                <select id="pos-pay-mode" class="input-premium">
+                                    <option value="Cash">Physical Cash Balance Pool Vault</option>
+                                    <option value="UPI">Digital Unified Payment Interface Core Pipeline</option>
+                                    <option value="Bank Transfer">Direct Institutional Commercial Bank Settlement</option>
+                                    <option value="Credit Book">Open Credit Account Party Balance Ledger</option>
+                                </select>
+                            </div>
+                            
+                            <button type="button" class="btn-premium execution-grand-btn" onclick="BillingController.commitInvoice()">
+                                🔒 COMMIT SECURE SETTLEMENT RUNTIME TRANSACTION & PRINT INVOICE
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-purchases" class="content-panel">
+                    <div class="dashboard-split-layout">
+                        <div class="glass-card">
+                            <h3>Inward Bulk Consignment Inventory Replenishment Voucher Entry Form</h3>
+                            <form id="purchase-entry-form" onsubmit="event.preventDefault();">
+                                <div class="form-row-grid vertical-stack">
+                                    <div class="field-box">
+                                        <label for="pur-supplier-select">Target Consigner Manufacturing Vendor Supplier Entity</label>
+                                        <select id="pur-supplier-select" class="input-premium"></select>
+                                    </div>
+                                    <div class="field-box">
+                                        <label for="pur-invoice-num">Vendor’s Physical Inward Reference Paper Invoice ID Number</label>
+                                        <input type="text" id="pur-invoice-num" class="input-premium" placeholder="e.g., KERA-2026-9875">
+                                    </div>
+                                    <div class="field-box">
+                                        <label for="pur-product-code">Target Replenishment Inventory Product Key Code</label>
+                                        <select id="pur-product-code" class="input-premium"></select>
+                                    </div>
+                                    <div class="field-box">
+                                        <label for="pur-qty">Inward Received Stock Volume Unit Quantity</label>
+                                        <input type="number" id="pur-qty" class="input-premium" min="1" value="100">
+                                    </div>
+                                    <div class="field-box">
+                                        <label for="pur-price">Negotiated Inward Base Acquisition Cost Unit Landing Value Rate (₹)</label>
+                                        <input type="number" id="pur-price" class="input-premium" min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-premium" style="margin-top: 20px; width: 100%; justify-content: center;" onclick="PurchaseController.commitInward()">
+                                    📥 COMMIT INWARD FREIGHT & RECALCULATE STOCK VALUES
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="glass-card">
+                            <h3>Historical Inward Log Tracking Trace Ledger Matrix</h3>
+                            <div class="cart-scroller-table" style="max-height: 400px;">
+                                <table class="enterprise-table mini-text">
+                                    <thead>
+                                        <tr>
+                                            <th>Voucher ID</th>
+                                            <th>Supplier Source</th>
+                                            <th>Invoice Ref</th>
+                                            <th>Gross Capital Valuation Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="purchase-history-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-ledgers" class="content-panel">
+                    <div class="glass-card data-table-wrapper">
+                        <h3>Customer Credit Exposure Accounts Index & Corporate Manufacturing Supplier Payables</h3>
+                        <p class="subtitle" style="margin-bottom: 15px; color: var(--text-muted-gray);">
+                            Positive indicators reflect receivables owed to Showroom. Negative indicators represent outstanding structural payables tracked inside procurement chains.
+                        </p>
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>Stakeholder Legal Entity Name</th>
+                                    <th>Account System Profile Classification</th>
+                                    <th>Secure Core Contact Index Number</th>
+                                    <th>Statutory Tax Registry Identification Data Sequence</th>
+                                    <th>Current Financial Balancing Exposure Status Value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ledgers-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="panel-calcs" class="content-panel">
+                    <div class="dashboard-split-layout">
+                        <div class="glass-card">
+                            <h3>Architectural Vitrified Ceramic Tile Structural Packaging Calculator</h3>
+                            <div class="form-row-grid vertical-stack">
+                                <div class="field-box">
+                                    <label for="calc-area">Target Total Room Floor/Wall Surface Target Footprint Surface Area Dimension (Sq. Ft.)</label>
+                                    <input type="number" id="calc-area" class="input-premium" value="120" oninput="CalcModule.run()">
+                                </div>
+                                <div class="field-box">
+                                    <label for="calc-length">Individual Tile Physical Geometric Length Metric (Inches Dimension Factor)</label>
+                                    <input type="number" id="calc-length" class="input-premium" value="24" oninput="CalcModule.run()">
+                                </div>
+                                <div class="field-box">
+                                    <label for="calc-width">Individual Tile Physical Geometric Width Metric (Inches Dimension Factor)</label>
+                                    <input type="number" id="calc-width" class="input-premium" value="24" oninput="CalcModule.run()">
+                                </div>
+                                <div class="field-box">
+                                    <label for="calc-boxcount">Box Factory Packaging Aggregation Unit Multiplier Index (Pieces Per Sealed Carton Box)</label>
+                                    <input type="number" id="calc-boxcount" class="input-premium" value="4" oninput="CalcModule.run()">
+                                </div>
+                            </div>
+                            <div class="calculation-output-banner">
+                                Required Factory Carton Pack Volume Requirements Multiplier: <strong id="calc-output-boxes">0</strong> Sealed Cartons
+                            </div>
+                        </div>
+                        
+                        <div class="glass-card">
+                            <h3>Showroom Capital Investment Financial Profit Margin Estimation Pricing Node</h3>
+                            <div class="form-row-grid vertical-stack">
+                                <div class="field-box">
+                                    <label for="calc-cost">Wholesale Net Inward Acquisition Landing Cost Price Value (₹ per Base Unit Variant)</label>
+                                    <input type="number" id="calc-cost" class="input-premium" value="500" oninput="CalcModule.runPrice()">
+                                </div>
+                                <div class="field-box">
+                                    <label for="calc-margin">Target Corporate Net Profit Capitalization Objective Threshold Yield Ratio Rate Percentage Value (%)</label>
+                                    <input type="number" id="calc-margin" class="input-premium" value="25" oninput="CalcModule.runPrice()">
+                                </div>
+                            </div>
+                            <div class="calculation-output-banner success-style">
+                                Recommended Minimum Outward Selling Price Objective (Excl. Tax Pools): <strong id="calc-output-sell">₹666.67</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="panel-ai" class="content-panel">
+                    <div class="glass-card chat-workspace-wrapper">
+                        <h3>Localized Statutory Rules Machine Inference Knowledge Base Hub Interface Engine</h3>
+                        <p class="subtitle">
+                            Validates structural tax rules, standard HSN classification arrays, and layout accounting guidelines metrics locally without dynamic external pipeline dependencies.
+                        </p>
+                        <div id="chat-output-scroller" class="chat-terminal-scroller" role="log" aria-live="polite">
+                            <div class="msg system-msg">
+                                Showroom Operator Terminal Core Connection Matrix Securely Established. Input query directives such as: 'What is the statutory tax assessment rate applied to tiles?', 'List inventory classification HSN codes', or 'Show mapping box calculator rule formula configurations'.
+                            </div>
+                        </div>
+                        <div class="chat-input-bar">
+                            <input type="text" id="chat-query-input" class="input-premium" placeholder="Type compliance queries here to analyze context arrays tokens..." onkeydown="if(event.key==='Enter') AssistantEngine.query()">
+                            <button type="button" class="btn-premium" onclick="AssistantEngine.query()">Execute Logical Context Evaluation</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay-backdrop" id="product-modal" role="dialog" aria-labelledby="modal-headline" aria-modal="true" style="display: none;">
+        <div class="modal-surface-container glass-card">
+            <div class="modal-header">
+                <h3 id="modal-headline">Initialize Product Profile Setup Framework Matrix Node Row</h3>
+                <button type="button" class="close-modal-trigger" onclick="InventoryController.closeFormModal()" aria-label="Terminate Form Framework Processes Overlay Display View Layer Layer">✕</button>
+            </div>
+            <div class="modal-form-fields-grid">
+                <div class="field-box">
+                    <label for="form-p-code">Barcode Sequence / Unique Product Identification System Key Code Value</label>
+                    <input type="text" id="form-p-code" class="input-premium" placeholder="e.g., T-VIT-6060-019">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-name">Commercial Product Description Standard Identity Name</label>
+                    <input type="text" id="form-p-name" class="input-premium" placeholder="e.g., Royal Statuario Polished Vitrified Tile">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-brand">Manufacturing OEM / Corporate Brand Label Entity Node Registry</label>
+                    <input type="text" id="form-p-brand" class="input-premium" placeholder="e.g., Kajaria Ceramics / Somany">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-cat">Structural Core Inventory Storage Group Categorization Classification</label>
+                    <select id="form-p-cat" class="input-premium">
+                        <option value="Tiles">Vitrified & Ceramic Tiles Array Matrix</option>
+                        <option value="Sanitaryware">Vitreous Luxury Bathroom Porcelain Sanitaryware</option>
+                        <option value="Fittings">Chrome Brass Plumbic Water Flow Management Controls Fittings</option>
+                        <option value="Adhesives">High-Tensile Polymeric Structural Chemical Adhesives Solutions</option>
+                    </select>
+                </div>
+                <div class="field-box">
+                    <label for="form-p-hsn">Statutory National HSN System Tariff Trade Profile Mapping Code</label>
+                    <input type="text" id="form-p-hsn" class="input-premium" value="6907" maxlength="10">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-size">Physical Metric Geometric Dimensions Size Specifications Metric String</label>
+                    <input type="text" id="form-p-size" class="input-premium" placeholder="e.g., 600x600 mm / 800x1600 mm Multiplier">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-loc">Physical Warehouse Logistic Storage Yard Bay Frame Slot Shelf Index Location</label>
+                    <input type="text" id="form-p-loc" class="input-premium" placeholder="e.g., Warehouse Complex Sector B, Rack Slot Lane 4">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-stock">Initial Accounting Balancing Hand Stock Inventory Level Vault Volume</label>
+                    <input type="number" id="form-p-stock" class="input-premium" value="0" min="0">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-min">Critical Safety Buffer Stock Minimum Automation Replenishment Restock Alert Alarm Value</label>
+                    <input type="number" id="form-p-min" class="input-premium" value="15" min="0">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-purprice">Base Wholesale Raw Landing Net Inward Procurement Acquisition Cost Price Asset Rate (₹)</label>
+                    <input type="number" id="form-p-purprice" class="input-premium" value="0.00" min="0" step="0.01">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-mrpprice">Standard Maximum Retail Outward Standard Commercial Selling Target Price Value Value MRP (₹)</label>
+                    <input type="number" id="form-p-mrpprice" class="input-premium" value="0.00" min="0" step="0.01">
+                </div>
+                <div class="field-box">
+                    <label for="form-p-gst">Statutory National GST System Assessment Fiscal Tax Bracket Percentage Rate (%)</label>
+                    <select id="form-p-gst" class="input-premium">
+                        <option value="0">0% Exempted Bracket</option>
+                        <option value="5">5% Low-Tier Compound Adhesive Rate Matrix</option>
+                        <option value="12">12% Secondary Mid-Tier Component Variant Rate</option>
+                        <option value="18" selected>18% Standard Ceramic Vitrified Masonry Structural Fixtures Rate Tier</option>
+                        <option value="28">28% Premium Luxury Architectural Appurtenances Surcharge Bracket Tier</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-action-row">
+                <button type="button" class="btn-secondary" onclick="InventoryController.closeFormModal()">Abort Operational Setup Configuration Changes</button>
+                <button type="button" class="btn-premium" onclick="InventoryController.commitSave()">Save Form Input & Commit Product Entity Profile to Permanent Relational Tables</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="hardcopy-invoice-printout" aria-hidden="true">
+        <div class="printout-header">
+            <h2>TAX INVOICE / TRANSACTION SLIP MEMO</h2>
+            <h3>ASHIRWAD SANITARY & TILES</h3>
+            <p>Showroom Headquarters Base Operations Complex Node Module: Sector 4, Lucknow, Uttar Pradesh, PIN 226001</p>
+            <p>Executive Management Desk Registry Node: Arvind Mittal | Corporate GSTIN State Registry ID: 09AABCA1234M1Z5</p>
+            <p>Telecommunications Hotlines Index: +91 94558 55203 | Communications Network Email: contact@ashirwaderp.local</p>
+        </div>
+        <hr class="printout-rule" style="border: 0; border-top: 2px solid #000; margin: 15px 0;">
+        <table class="meta-printout-table">
+            <tbody>
+                <tr>
+                    <td><strong>System Generated Invoice Reference Serialization Key ID:</strong> <span id="print-inv-id">AS-INV-UNKNOWN-XXXX</span></td>
+                    <td><strong>System Execution Runtime Log Clock Date:</strong> <span id="print-inv-date">00/00/0000</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Acquiring Consigner Client Entity Legal Name:</strong> <span id="print-cust-name">Walk-In Counter Retail Client</span></td>
+                    <td><strong>Client Contact Registry Index Node:</strong> <span id="print-cust-phone">N/A</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Client Dynamic Statutory Tax Profile Registry GSTIN Data Reference:</strong> <span id="print-cust-gstin">Unregistered Retail Final Consumer Linkage</span></td>
+                    <td><strong>Billing Structural Type Framework Matrix Model:</strong> <span id="print-invoice-type-label">Standard Estimate Base Framework</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <table class="printout-items-grid" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 2px solid #000; background: #f2f2f2;">
+                    <th style="padding: 8px; text-align: left;">Product Inventory Configuration Segment Line Descriptor Name String</th>
+                    <th style="padding: 8px; text-align: center;">Target Volume Qty</th>
+                    <th style="padding: 8px; text-align: right;">Unit MRP Base Rate Price</th>
+                    <th style="padding: 8px; text-align: right;">Combined Line Financial Net Assessment Total Amount Value</th>
+                </tr>
+            </thead>
+            <tbody id="print-items-tbody"></tbody>
+        </table>
+        
+        <div class="printout-summary-block">
+            <p>Gross Balance Assessment Base Total Outward Matrix Value Amount: <span id="print-sub">₹0.00</span></p>
+            <p>Discretionary Corporate Trade Discount Deduction Asset Relief Subtraction Value: <span id="print-disc">₹0.00</span></p>
+            <p>Assessed Central CGST State Pool Treasury Weight Burden Factor Portion: <span id="print-cgst">₹0.00</span></p>
+            <p>Assessed State SGST Regional Pool Treasury Weight Burden Factor Portion: <span id="print-sgst">₹0.00</span></p>
+            <hr style="border: 0; border-top: 1px dashed #000; margin: 5px 0; width: 300px; display: inline-block; float: right; clear: both;">
+            <h3 style="margin-top: 10px; font-size: 16px; clear: both;">Net Final Settled Balancing Payable Value Settlement Total Obligation: <span id="print-net">₹0.00</span></h3>
+        </div>
+        
+        <div class="printout-footer-disclaimer" style="margin-top: 60px; text-align: center; font-size: 10px; color: #555;">
+            <p>Thank you for choosing Ashirwad Sanitary & Tiles. Goods once sold are non-refundable under normal commercial rules matrix layout execution loops context.</p>
+            <p>This document constitutes a secure terminal hardware system printout execution node rendering mapping.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
